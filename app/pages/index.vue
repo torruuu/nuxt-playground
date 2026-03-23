@@ -1,25 +1,5 @@
-<script setup lang="ts">
-import { Button } from '@/components/ui/button'
-import { authClient } from '@/lib/auth/auth-client'
-import { LogOutIcon } from 'lucide-vue-next'
-
-const { session } = useSession()
-
-const handleSignOut = async () => {
-  await authClient.signOut({
-    fetchOptions: {
-      onSuccess: () => reloadNuxtApp(),
-    },
-  })
-}
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <div class="flex flex-col items-center justify-center gap-2 p-4">
-    <p>{{ $t('pages.home.welcome', { name: session?.user?.name }) }}</p>
-    <Button @click="handleSignOut">
-      <LogOutIcon />
-      {{ $t('action.sign_out') }}
-    </Button>
-  </div>
+  <h1>Hello World</h1>
 </template>
