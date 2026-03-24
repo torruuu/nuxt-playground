@@ -7,6 +7,7 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@nuxtjs/i18n',
     'vue-sonner/nuxt',
+    '@pinia/nuxt',
   ],
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
@@ -37,7 +38,7 @@ export default defineNuxtConfig({
   },
   routeRules: {
     '/api/**': {
-      proxy: `${process.env.NUXT_API_BASE}/**`,
+      proxy: 'http://localhost:4000/**',
     },
   },
   compatibilityDate: '2026-02-27',
