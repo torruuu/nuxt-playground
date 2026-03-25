@@ -88,13 +88,27 @@
       "async_validation_not_supported": "Async validation not supported",
       "validation_error": "Validation error",
       "missing_field": "Field is required",
-      
+
       "internal_server_error": "Internal server error",
       "not_found": "Not found"
     },
     "success": {
       "product_created": "Product created successfully",
       "product_created_description": "Product with name {name} has been created successfully with id {id}"
+    },
+    "form": {
+      "placeholder": {
+        "name": "E.g: Blue t-shirt",
+        "description": "E.g: Blue cotton t-shirt size M",
+        "price": "E.g: 9.99",
+        "stock": "E.g: 100",
+        "category": "E.g: Clothing"
+      }
+    },
+    "action": {
+      "back": "Back",
+      "submit": "Create product",
+      "submitting": "Creating..."
     }
   }
 }

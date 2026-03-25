@@ -95,6 +95,20 @@
     "success": {
       "product_created": "Producto creado correctamente",
       "product_created_description": "El producto con nombre {name} ha sido creado correctamente con id {id}"
+    },
+    "form": {
+      "placeholder": {
+        "name": "Ej: Camiseta azul",
+        "description": "Ej: Camiseta de algodón azul talla M",
+        "price": "Ej: 9.99",
+        "stock": "Ej: 100",
+        "category": "Ej: Ropa"
+      }
+    },
+    "action": {
+      "back": "Volver",
+      "submit": "Crear producto",
+      "submitting": "Creando..."
     }
   }
 }
