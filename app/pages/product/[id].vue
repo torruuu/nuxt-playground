@@ -1,12 +1,24 @@
 <script setup>
+import { useQuery } from '@tanstack/vue-query'
 import { ArrowLeft, Heart } from 'lucide-vue-next'
+import { computed } from 'vue'
 
 const route = useRoute()
 const router = useRouter()
 const carro = useCarroStore()
 const favorites = useFavoritesStore()
-const { data, loading, error, fetchData } = usefetchApi()
-onMounted(() => fetchData(`/products/${route.params.id}`))
+
+const id = computed(() => route.params.id)
+
+const { data, isPending, error } = useQuery({
+  queryKey: ['product', id],
+  queryFn: async () => {
+    const res = await fetch(`/api/products/${id.value}`)
+    if (!res.ok) throw new Error(`Error ${res.status}: producto no encontrado`)
+    return res.json()
+  },
+  enabled: computed(() => !!id.value),
+})
 
 function addItem(product) {
   carro.addItem(product)
@@ -27,7 +39,7 @@ function removeFavorite(product) {
         Volver a la tienda
       </button>
 
-      <div v-if="loading" class="mt-20 flex justify-center text-lg text-slate-400">
+      <div v-if="isPending" class="mt-20 flex justify-center text-lg text-slate-400">
         Cargando producto...
       </div>
 
@@ -37,9 +49,9 @@ function removeFavorite(product) {
             class="flex h-72 w-72 min-w-72 items-center justify-center overflow-hidden rounded-xl bg-slate-100"
           >
             <img
-              :alt="data.name"
+              :alt="data.title"
+              :src="data.image"
               class="max-h-full max-w-full object-contain"
-              src="https://placehold.co/288x288?text=IMG disponible proximamente"
             />
           </div>
 
@@ -75,7 +87,7 @@ function removeFavorite(product) {
 
         <div v-else class="mt-20 text-center">
           <p class="text-2xl font-bold text-red-400">
-            {{ error ?? 'ID de producto no encontrado.' }}
+            {{ error?.message ?? 'ID de producto no encontrado.' }}
           </p>
         </div>
       </div>
