@@ -2,8 +2,18 @@
 import { useMutation } from '@tanstack/vue-query'
 import { Undo2 } from 'lucide-vue-next'
 import { toast } from 'vue-sonner'
+import { z } from 'zod'
 
 const { t: traducir } = useI18n()
+
+// esquema de validaciones con Zod
+const schema = z.object({
+  name: z.string().min(1),
+  description: z.string().min(1),
+  price: z.coerce.number().min(0), // coerce convierte a numero
+  stock: z.coerce.number().min(0),
+  category: z.string().min(1),
+})
 
 const form = ref({
   name: '',
@@ -30,17 +40,12 @@ const { mutate: crearProducto, isPending } = useMutation({
 })
 
 function handleSubmit() {
-  if (
-    !form.value.name ||
-    !form.value.description ||
-    !form.value.price ||
-    !form.value.stock ||
-    !form.value.category
-  ) {
-    toast.error(traducir('form.error.required'))
+  const resultado = schema.safeParse(form.value)
+  if (!resultado.success) {
+    toast.error('El formulario no es válido')
     return
   }
-  crearProducto(form.value)
+  crearProducto(resultado.data)
 }
 </script>
 

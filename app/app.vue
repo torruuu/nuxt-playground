@@ -17,7 +17,8 @@ const colorMode = useColorMode()
     <Toaster
       :theme="(colorMode.preference as any) || 'system'"
       class="pointer-events-auto"
-      position="top-left"
+      position="top-right"
+      rich-colors
     />
   </ClientOnly>
 </template>
