@@ -1,22 +1,29 @@
 <script setup>
-import { useProductos } from '@/composables/useProducts'
+import { useQuery } from '@tanstack/vue-query'
 import { Undo2 } from 'lucide-vue-next'
 
 const route = useRoute()
-const { productos, loading, error, fetchData } = useProductos()
 
-fetchData('/products/' + route.params.id)
+const {
+  data: producto,
+  isPending,
+  isError,
+} = useQuery({
+  queryKey: ['producto', route.params.id],
+  queryFn: () =>
+    fetch(`http://localhost:4000/products/${route.params.id}`).then((r) => r.json()),
+})
 </script>
 
 <template>
   <div>
-    <div v-if="error" class="flex h-screen items-center justify-center text-2xl">
-      {{ error }}
+    <div v-if="isError" class="flex h-screen items-center justify-center text-2xl">
+      Error al cargar el producto
     </div>
-    <div v-else-if="loading" class="flex h-screen items-center justify-center text-2xl">
+    <div v-else-if="isPending" class="flex h-screen items-center justify-center text-2xl">
       Cargando...
     </div>
-    <div v-else-if="productos">
+    <div v-else-if="producto">
       <div class="mb-10 ml-12">
         <NuxtLink class="inline-block" to="/clothes">
           <div
@@ -34,14 +41,14 @@ fetchData('/products/' + route.params.id)
         </div>
         <div class="flex flex-col">
           <div class="mb-2 text-sm tracking-widest text-gray-400 uppercase">
-            {{ productos.category }}
+            {{ producto.category }}
           </div>
-          <div class="text-2xl font-bold">{{ productos.name }}</div>
-          <div class="mt-4 text-xl">{{ productos.description }}</div>
+          <div class="text-2xl font-bold">{{ producto.name }}</div>
+          <div class="mt-4 text-xl">{{ producto.description }}</div>
           <div class="mt-2 text-sm text-gray-500">
-            Stock: {{ productos.stock }} unidades
+            Stock: {{ producto.stock }} unidades
           </div>
-          <div class="mt-4 text-2xl font-bold">{{ productos.price }} €</div>
+          <div class="mt-4 text-2xl font-bold">{{ producto.price }} €</div>
         </div>
       </div>
     </div>
