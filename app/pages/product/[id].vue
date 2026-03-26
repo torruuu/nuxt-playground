@@ -2,6 +2,7 @@
 import { useQuery } from '@tanstack/vue-query'
 import { ArrowLeft, Heart } from 'lucide-vue-next'
 import { computed } from 'vue'
+import { fetchApi } from '~/lib/shadcn/api'
 
 const route = useRoute()
 const router = useRouter()
@@ -13,9 +14,9 @@ const id = computed(() => route.params.id)
 const { data, isPending, error } = useQuery({
   queryKey: ['product', id],
   queryFn: async () => {
-    const res = await fetch(`/api/products/${id.value}`)
-    if (!res.ok) throw new Error(`Error ${res.status}: producto no encontrado`)
-    return res.json()
+    const { data, error } = await fetchApi(`/api/products/${id.value}`)
+    if (error) throw new Error(error)
+    return data
   },
   enabled: computed(() => !!id.value),
 })
